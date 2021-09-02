@@ -24,4 +24,4 @@ const verifyByToken = async (token): Promise<void> => {
         throw new AuthError(e.error.fullMessage);
     }
 }
-module.exports = {verifyByToken}
+export = verifyByToken

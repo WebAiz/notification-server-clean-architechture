@@ -1,15 +1,16 @@
 class CreateHandshake {
     private users: any[];
+
     constructor() {
         this.users = [];
     }
 
-    connection = ({verifyClientId}) => async (socket) => {
+    connection = ({verifyByToken}) => async (socket) => {
         try {
             console.log(`CLIENT ${socket.id} CONNECTED`)
             const clientId = socket.handshake.auth.token;
             if (clientId) {
-                await verifyClientId(clientId)
+                await verifyByToken(clientId)
                 this.users.push({
                     clientId,
                     socketId: socket.id,
@@ -30,4 +31,4 @@ class CreateHandshake {
     }
 }
 
-module.exports = new CreateHandshake;
+export = new CreateHandshake;

@@ -1,10 +1,11 @@
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const {postNotification} = require('./controllers');
-const makeExpressCallback = require('./express-callback');
-const express = require('express');
-const cors = require('cors');
-const http = require('http')
+import bodyParser          from 'body-parser';
+import dotenv              from 'dotenv';
+import {postNotification}  from './controllers';
+import makeExpressCallback from './express-callback';
+import express             from 'express';
+import cors                from 'cors';
+import http                from 'http'
+
 const app = express()
 const server = http.createServer(app);
 
@@ -18,8 +19,6 @@ app.use(bodyParser.json())
 app.post(`/notifications`, makeExpressCallback(postNotification))
 
 // listen for requests
-server.listen(process.env.PORT, () => {
-    console.log(`Server is listening on port ${process.env.PORT}`)
+server.listen(process.env.express_port, () => {
+    console.log(`Server is listening on port ${process.env.express_port}`)
 })
-
-module.exports = {app}
