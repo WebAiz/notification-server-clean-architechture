@@ -3,6 +3,17 @@ export interface INotificationInput {
     content: {
         text: string
     },
-    receiverGroup: string,
+    receiverGroup?: string,
     notificationType: string
+}
+
+export interface ExtendedINotificationInput extends INotificationInput {
+    content: {
+        eventName: string,
+        text: string
+    }
+}
+
+export interface ExtendedINotificationOutput extends ExtendedINotificationInput {
+    permissions?: string[]
 }

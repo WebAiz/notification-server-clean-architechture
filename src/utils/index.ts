@@ -20,7 +20,7 @@ const verifyByToken = async (token): Promise<void> => {
     try {
         return await rp(options);
     } catch (e) {
-        console.error(e);
+        // console.error(e);
         throw new AuthError(e.error.fullMessage);
     }
 }

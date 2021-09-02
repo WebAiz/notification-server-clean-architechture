@@ -1,6 +1,6 @@
 import {INotificationInput} from '../interfaces/'
 
-export default function buildMakeNotification({}) {
+export default function buildMakeNotification() {
     return function makeNotification({
                                          sendAddress,
                                          content,

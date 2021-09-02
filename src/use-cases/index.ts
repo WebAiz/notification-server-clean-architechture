@@ -8,3 +8,4 @@ const notificationService: object = Object.freeze({
 
 export default notificationService
 export {sendNotification}
+

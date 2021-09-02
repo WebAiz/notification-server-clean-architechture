@@ -1,7 +1,6 @@
-export default function makePostNotification({sendNotification})
-    : (httpRequest) => Promise<{ headers: { 'Content-Type': string }; body: { sent: any }; statusCode: number }
-    | { headers: { 'Content-Type': string }; body: { error: any }; statusCode: number }> {
-    return async function postNotification(httpRequest) {
+export default function makePostNotification({sendNotification}) {
+    return async function postNotification(httpRequest: { body: { [x: string]: any } }): Promise<{ headers: { "Content-Type": string }; body: { sent: unknown }; statusCode: number }
+        | { headers: { "Content-Type": string }; body: { error: any }; statusCode: number }> {
         try {
             const {...notificationInfo} = httpRequest.body
             const sent = await sendNotification({
@@ -9,7 +8,7 @@ export default function makePostNotification({sendNotification})
             })
             return {
                 headers:    {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 statusCode: 201,
                 body:       {sent},
@@ -19,7 +18,7 @@ export default function makePostNotification({sendNotification})
 
             return {
                 headers:    {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 statusCode: 400,
                 body:       {
