@@ -6,7 +6,7 @@ import {
     ISendNotification
 } from "../interfaces";
 
-import {AuthError, ValidateError} from "../utils";
+import {AuthError, BadRequest, ValidateError} from "../utils";
 
 export class Sender {
     constructor(private readonly _send: ISendNotification) {
@@ -57,7 +57,7 @@ export default function sendMessage({jwt_decode, adminIo, companyIo, userIo, ver
                 }
             }
         } else {
-            throw new ValidateError({"Input Error": {message: "Input structure is incomplete"}}, "Invalid Input")
+            throw new BadRequest("Input Structure is incomplete")
         }
     }
 
