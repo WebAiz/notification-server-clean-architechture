@@ -1,21 +1,30 @@
-import {ExtendedINotificationInput, ExtendedINotificationOutput} from "../interfaces";
+// Interfaces
+import {
+    ExtendedINotificationInput,
+    IDecoded,
+    ISendMessage, ISendNotification
+} from "../interfaces";
 
-export default function sendMessage({jwt_decode, adminIo, companyIo, userIo, verifyByToken}) {
-    return Object.freeze({
-        send,
-    })
+export class Sender {
+    constructor(private readonly _send: ISendNotification) {
+    }
 
+    public get send() {
+        return this._send
+    }
+}
+
+export default function sendMessage({jwt_decode, adminIo, companyIo, userIo, verifyByToken}: ISendMessage): Sender {
     async function send({
                             sendAddress,
                             content,
                             receiverGroup,
                             notificationType,
-                        }: ExtendedINotificationInput)
-        : Promise<ExtendedINotificationOutput | { errMessage: string }> {
+                        }: ExtendedINotificationInput): Promise<object> {
         if (sendAddress && content.hasOwnProperty("eventName") && content.eventName.length > 1) {
             try {
                 await verifyByToken(sendAddress)
-                const decoded = jwt_decode(sendAddress);
+                const decoded: IDecoded = jwt_decode(sendAddress);
                 switch (receiverGroup) {
                     case "admin":
                         if (decoded.permissions.includes("companies")
@@ -37,11 +46,13 @@ export default function sendMessage({jwt_decode, adminIo, companyIo, userIo, ver
                     default:
                         return {errMessage: "Receiver Group not found."}
                 }
-            } catch (error) {
-                return error
+            } catch (e) {
+                throw new Error("Authorization Error")
             }
         } else {
-            return {errMessage: "Request structure is not complete"}
+            throw new Error("Input structure is incomplete")
         }
     }
+
+    return new Sender(send)
 }

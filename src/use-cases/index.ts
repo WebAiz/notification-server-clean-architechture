@@ -1,8 +1,8 @@
-import sendInteractor       from '../socket-io-controller';
-import makeSendNotification from './send-notification'
+import {sendInteractor}       from "../socket-io-controller";
+import {makeSendNotification} from "./send-notification"
 
-const sendNotification = makeSendNotification({sendInteractor})
-const notificationService: object = Object.freeze({
+const sendNotification = makeSendNotification(sendInteractor)
+const notificationService = Object.freeze({
     sendNotification,
 })
 

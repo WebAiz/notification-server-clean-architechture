@@ -1,7 +1,7 @@
-const {sendNotification} = require('../use-cases')
-import makePostNotification from './post-notification';
+import {sendNotification}     from "../use-cases"
+import {makePostNotification} from "./post-notification";
 
-const postNotification = makePostNotification({sendNotification})
+const postNotification = makePostNotification(sendNotification)
 const NotificationController: object = Object.freeze({
     postNotification,
 })

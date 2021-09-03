@@ -1,6 +1,8 @@
+// Interfaces
 import {Request, Response, NextFunction} from "express";
+import {IController}                     from "../interfaces";
 
-export default function makeExpressCallback(controller): (req: Request, res: Response) => void {
+export function makeExpressCallback(controller: IController): (req: Request, res: Response) => void {
     return (req, res): void => {
         const httpRequest = {
             body:    req.body,
@@ -23,6 +25,6 @@ export default function makeExpressCallback(controller): (req: Request, res: Res
                 res.type("json")
                 res.status(httpResponse.statusCode).send(httpResponse.body)
             })
-            .catch(e => res.status(500).send({error: "An unkown error occurred."}))
+            .catch(() => res.status(500).send({error: "An unkown error occurred."}))
     }
 }

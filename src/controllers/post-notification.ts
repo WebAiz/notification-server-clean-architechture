@@ -1,6 +1,12 @@
-export default function makePostNotification({sendNotification}) {
-    return async function postNotification(httpRequest: { body: { [x: string]: any } }): Promise<{ headers: { "Content-Type": string }; body: { sent: unknown }; statusCode: number }
-        | { headers: { "Content-Type": string }; body: { error: any }; statusCode: number }> {
+// Interfaces
+import {
+    IPostBodyNotification,
+    IPostNotificationOutput,
+    ISendNotification
+} from "../interfaces";
+
+export function makePostNotification(sendNotification: ISendNotification) {
+    return async function postNotification(httpRequest: IPostBodyNotification): Promise<IPostNotificationOutput> {
         try {
             const {...notificationInfo} = httpRequest.body
             const sent = await sendNotification({
@@ -15,16 +21,18 @@ export default function makePostNotification({sendNotification}) {
             }
         } catch (e) {
             console.log(e)
-
+            // @ts-ignore error of type unknown
             return {
                 headers:    {
                     "Content-Type": "application/json",
                 },
                 statusCode: 400,
                 body:       {
+                    // @ts-ignore
                     error: e.message,
                 },
             }
+
         }
     }
 }

@@ -1,8 +1,11 @@
-import makeNotification     from "../notification"
-import {INotificationInput} from "../interfaces";
+import {makeNotification} from "../notification"
 
-export default function makeSendNotification({sendInteractor}) {
-    return async function sendNotification(notificationInfo: INotificationInput) {
+// Interfaces
+import {ExtendedINotificationInput} from "../interfaces";
+import {Sender}                     from "../socket-io-controller/send-message";
+
+export function makeSendNotification(sendInteractor: Sender) {
+    return async function sendNotification(notificationInfo: ExtendedINotificationInput): Promise<object> {
         const notification = makeNotification(notificationInfo)
         return sendInteractor.send({
             sendAddress:      notification.getSendAddress(),
