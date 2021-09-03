@@ -1,9 +1,9 @@
-import {JwtDecodeOptions}      from "jwt-decode";
-import {Socket}                from "socket.io";
+import {JwtDecodeOptions} from "jwt-decode";
+import {Socket}           from "socket.io";
 
 export interface INotificationInput {
     sendAddress: string,
-    content:object,
+    content: object,
     receiverGroup?: string,
     notificationType: string
 }
@@ -53,6 +53,15 @@ export interface IPostBodyNotification {
 
 export interface IPostNotificationOutput {
     headers: { "Content-Type": string };
-    body: { sent: object } | { error: unknown }
+    body: { sent: object } | { error: unknown , details?: object}
     statusCode: number;
+
+}
+
+export interface FieldErrors {
+    [name: string]: { message: string; value?: any };
+}
+
+export interface Exception extends Error {
+    status: number;
 }

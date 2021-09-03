@@ -1,14 +1,37 @@
+import {Exception, FieldErrors} from "../interfaces";
+
 const rp = require("request-promise")
 
-class AuthError extends Error {
-    private code: number;
+export class AuthError extends Error {
+    public status: number;
     private _fullMessage: string;
 
     constructor(fullMessage: string) {
         super();
         this._fullMessage = fullMessage;
         this.message = "Not Authorized";
-        this.code = 401;
+        this.status = 401;
+    }
+}
+
+export class BadRequest extends Error {
+    public message: string;
+    private status: number;
+
+    constructor(message: string) {
+        super();
+        this.message = message;
+        this.status = 400;
+    }
+}
+
+export class ValidateError extends Error implements Exception {
+    public status = 422;
+    public name = "ValidateError";
+
+    constructor(public fields: FieldErrors, public message: string) {
+        super(message);
+        Object.setPrototypeOf(this, ValidateError.prototype);
     }
 }
 
@@ -23,6 +46,11 @@ export const verifyByToken = async (token: string): Promise<void> => {
         return await rp(options);
     } catch (e) {
         // @ts-ignore
-        throw new AuthError(e.error.fullMessage);
+        if (e.response.statusCode === 401) {
+            // @ts-ignore
+            throw new AuthError(e.error.fullMessage)
+        } else {
+            throw new Error("SSO verify failed")
+        }
     }
 }

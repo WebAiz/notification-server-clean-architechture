@@ -20,19 +20,19 @@ export function makePostNotification(sendNotification: ISendNotification) {
                 body:       {sent},
             }
         } catch (e) {
-            console.log(e)
-            // @ts-ignore error of type unknown
             return {
                 headers:    {
                     "Content-Type": "application/json",
                 },
-                statusCode: 400,
+                // @ts-ignore
+                statusCode: e.status ? e.status : 400,
                 body:       {
                     // @ts-ignore
                     error: e.message,
+                    // @ts-ignore
+                    details: e?.fields,
                 },
             }
-
         }
     }
 }

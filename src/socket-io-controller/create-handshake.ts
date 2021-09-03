@@ -34,7 +34,7 @@ class CreateHandshake {
 
         } catch (error) {
             socket.disconnect()
-            throw new Error
+            throw new Error("Error with Socket")
         }
     }
 }

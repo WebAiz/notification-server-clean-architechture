@@ -2,8 +2,11 @@
 import {
     ExtendedINotificationInput,
     IDecoded,
-    ISendMessage, ISendNotification
+    ISendMessage,
+    ISendNotification
 } from "../interfaces";
+
+import {AuthError, ValidateError} from "../utils";
 
 export class Sender {
     constructor(private readonly _send: ISendNotification) {
@@ -47,10 +50,14 @@ export default function sendMessage({jwt_decode, adminIo, companyIo, userIo, ver
                         return {errMessage: "Receiver Group not found."}
                 }
             } catch (e) {
-                throw new Error("Authorization Error")
+                if (e instanceof AuthError) {
+                    throw new AuthError("Not Authorized")
+                } else {
+                    throw new Error("Unexpected Error in server")
+                }
             }
         } else {
-            throw new Error("Input structure is incomplete")
+            throw new ValidateError({"Input Error": {message: "Input structure is incomplete"}}, "Invalid Input")
         }
     }
 
